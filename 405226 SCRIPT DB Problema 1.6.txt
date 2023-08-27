@@ -1,0 +1,80 @@
+USE "405226_Problema1.6"
+GO
+
+CREATE TABLE Estados_Camiones(
+id_estado_camion int IDENTITY(1,1),
+estado varchar(30)
+CONSTRAINT pk_estado_camion PRIMARY KEY(id_estado_camion)); 
+
+CREATE TABLE Camiones(
+id_camion int IDENTITY(1,1),
+patente varchar(20),
+estado_camion int,
+peso_maximo int
+CONSTRAINT pk_camiones PRIMARY KEY(id_camion),
+CONSTRAINT fk_estado_camion FOREIGN KEY(estado_camion)
+REFERENCES Estados_Camiones(id_estado_camion));
+
+CREATE TABLE Tipos_Carga(
+id_tipo_carga int IDENTITY(1,1),
+nombre varchar(30)
+CONSTRAINT pk_tipos_carga PRIMARY KEY (id_tipo_carga));
+
+CREATE TABLE Cargas(
+id_carga int IDENTITY(1,1),
+peso decimal(10,2),
+tipo_carga int,
+id_camion int 
+CONSTRAINT pk_carga PRIMARY KEY(id_carga),
+CONSTRAINT fk_carga_tipo FOREIGN KEY(tipo_carga)
+REFERENCES Tipos_Carga(id_tipo_carga),
+CONSTRAINT fk_carga_camion FOREIGN KEY (id_camion)
+REFERENCES Camiones(id_camion));
+
+INSERT INTO Tipos_Carga(nombre) VALUES('Packing');
+INSERT INTO Tipos_Carga(nombre) VALUES('Cajas');
+INSERT INTO Tipos_Carga(nombre) VALUES('Bidones');
+
+INSERT INTO Estados_Camiones(estado) VALUES('Disponible');
+INSERT INTO Estados_Camiones(estado) VALUES('En Reparacion');
+INSERT INTO Estados_Camiones(estado) VALUES('De Viaje');
+
+CREATE PROCEDURE SP_PROXIMO_CAMION
+@next int OUTPUT
+AS
+BEGIN
+    INSERT INTO Camiones(patente,estado_camion,peso_maximo) VALUES('',1,1)
+    SET @next = SCOPE_IDENTITY() 
+END
+
+CREATE PROCEDURE SP_CONSULTAR_ESTADOS
+AS
+BEGIN
+SELECT * FROM Estados_Camiones
+END
+
+CREATE PROCEDURE SP_CONSULTAR_TIPOS_CARGA
+AS
+BEGIN
+SELECT * FROM Tipos_Carga
+END
+CREATE PROCEDURE SP_INSERTAR_CAMION
+@idCamion int,
+@patente varchar(30),
+@estadoCamion int,
+@pesoMax int
+AS
+BEGIN
+UPDATE Camiones
+SET patente=@patente, estado_camion=@estadoCamion, peso_maximo=@pesoMax
+WHERE id_camion=@idCamion
+END
+
+CREATE PROCEDURE SP_INSERTAR_CARGA
+@idCamion int,
+@pesoCarga decimal(10,2),
+@tipoCarga int
+AS
+INSERT INTO Cargas(peso,tipo_carga,id_camion)
+VALUES(@pesoCarga,@tipoCarga,@idCamion)
+END
