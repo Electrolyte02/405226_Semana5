@@ -56,9 +56,46 @@ namespace _405226_Problema_1._6_.Entidades
             set { pesoMaximo = value; }
         }
 
+        public List<Carga> ListaCargas
+        {
+            get { return listaCargas; }
+            set { listaCargas = value; }
+        }
+
         public override string ToString()
         {
             return "Camion: " + patente;
+        }
+
+        public double PesoRestante()
+        {
+            double aux = 0;
+            foreach(Carga c in listaCargas)
+            {
+                aux += c.Peso;
+            }
+            return pesoMaximo - aux;
+        }
+        //Metodos para manejar los detalles, agregar o quitar!
+        public void AgregarCarga(Carga nCarga)
+        {
+            listaCargas.Add(nCarga);
+        }
+
+        public void QuitarCarga(int posicion)
+        {
+            listaCargas.RemoveAt(posicion);
+        }
+
+        //Metodo para calcular el total de cargas pa q no se rompa
+        public double CalcularTotal()
+        {
+            double aux = 0;
+            foreach(Carga c in listaCargas)
+            {
+                aux += c.Peso;
+            }
+            return aux;
         }
     }
 }

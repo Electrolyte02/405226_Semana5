@@ -17,7 +17,6 @@ namespace _405226_Problema_1._6_.Dominio
 
         public AccesoDatos()
         {
-            conexion= new SqlConnection(stringConexion);
         }
 
         private void Conectar()

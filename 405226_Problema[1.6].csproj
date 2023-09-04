@@ -50,11 +50,18 @@
     <Compile Include="Dominio\Camion.cs" />
     <Compile Include="Dominio\Carga.cs" />
     <Compile Include="Dominio\DBHelper.cs" />
+    <Compile Include="Dominio\Parametro.cs" />
     <Compile Include="Vistas\FormCargasCamiones.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Vistas\FormCargasCamiones.Designer.cs">
       <DependentUpon>FormCargasCamiones.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vistas\FormConsultaCamiones.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vistas\FormConsultaCamiones.Designer.cs">
+      <DependentUpon>FormConsultaCamiones.cs</DependentUpon>
     </Compile>
     <Compile Include="Vistas\FormPrincipal.cs">
       <SubType>Form</SubType>
@@ -66,6 +73,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Vistas\FormCargasCamiones.resx">
       <DependentUpon>FormCargasCamiones.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vistas\FormConsultaCamiones.resx">
+      <DependentUpon>FormConsultaCamiones.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Vistas\FormPrincipal.resx">
       <DependentUpon>FormPrincipal.cs</DependentUpon>

@@ -32,6 +32,7 @@
             this.inicioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.camionesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cargasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.consultarCamionesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -55,7 +56,8 @@
             // camionesToolStripMenuItem
             // 
             this.camionesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cargasToolStripMenuItem});
+            this.cargasToolStripMenuItem,
+            this.consultarCamionesToolStripMenuItem});
             this.camionesToolStripMenuItem.Name = "camionesToolStripMenuItem";
             this.camionesToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
             this.camionesToolStripMenuItem.Text = "Camiones";
@@ -63,9 +65,16 @@
             // cargasToolStripMenuItem
             // 
             this.cargasToolStripMenuItem.Name = "cargasToolStripMenuItem";
-            this.cargasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cargasToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
             this.cargasToolStripMenuItem.Text = "Nuevo Camion";
             this.cargasToolStripMenuItem.Click += new System.EventHandler(this.cargasToolStripMenuItem_Click);
+            // 
+            // consultarCamionesToolStripMenuItem
+            // 
+            this.consultarCamionesToolStripMenuItem.Name = "consultarCamionesToolStripMenuItem";
+            this.consultarCamionesToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.consultarCamionesToolStripMenuItem.Text = "Consultar Camiones";
+            this.consultarCamionesToolStripMenuItem.Click += new System.EventHandler(this.consultarCamionesToolStripMenuItem_Click);
             // 
             // FormPrincipal
             // 
@@ -89,6 +98,7 @@
         private System.Windows.Forms.ToolStripMenuItem inicioToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem camionesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cargasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem consultarCamionesToolStripMenuItem;
     }
 }
 

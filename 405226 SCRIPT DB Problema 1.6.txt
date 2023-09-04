@@ -21,7 +21,7 @@ nombre varchar(30)
 CONSTRAINT pk_tipos_carga PRIMARY KEY (id_tipo_carga));
 
 CREATE TABLE Cargas(
-id_carga int IDENTITY(1,1),
+id_carga int,
 peso decimal(10,2),
 tipo_carga int,
 id_camion int 
@@ -43,8 +43,7 @@ CREATE PROCEDURE SP_PROXIMO_CAMION
 @next int OUTPUT
 AS
 BEGIN
-    INSERT INTO Camiones(patente,estado_camion,peso_maximo) VALUES('',1,1)
-    SET @next = SCOPE_IDENTITY() 
+    SET @next = (SELECT max(id_camion)+1 FROM Camiones);
 END
 
 CREATE PROCEDURE SP_CONSULTAR_ESTADOS
@@ -58,16 +57,16 @@ AS
 BEGIN
 SELECT * FROM Tipos_Carga
 END
+
 CREATE PROCEDURE SP_INSERTAR_CAMION
-@idCamion int,
 @patente varchar(30),
 @estadoCamion int,
-@pesoMax int
+@pesoMax int,
+@proxCamion int output
 AS
 BEGIN
-UPDATE Camiones
-SET patente=@patente, estado_camion=@estadoCamion, peso_maximo=@pesoMax
-WHERE id_camion=@idCamion
+INSERT INTO Camiones(patente,estado_camion,peso_maximo) VALUES (@patente,@estadoCamion,@pesoMax)
+SET @proxCamion = SCOPE_IDENTITY();
 END
 
 CREATE PROCEDURE SP_INSERTAR_CARGA
@@ -77,4 +76,44 @@ CREATE PROCEDURE SP_INSERTAR_CARGA
 AS
 INSERT INTO Cargas(peso,tipo_carga,id_camion)
 VALUES(@pesoCarga,@tipoCarga,@idCamion)
+END
+
+CREATE PROCEDURE SP_CONSULTAR_CAMIONES
+@patente varchar(30),
+@id_estado int
+AS
+BEGIN
+SELECT id_camion, patente, estado,peso_maximo
+FROM Camiones C JOIN Estados_Camiones E
+	ON c.estado_camion=e.id_estado_camion
+WHERE (patente LIKE '%'+@patente+'%')
+AND c.estado_camion=@id_estado
+END
+
+CREATE PROCEDURE SP_CONSULTAR_CAMIONES_MENOR
+@patente varchar(30),
+@id_estado int,
+@peso_max int
+AS
+BEGIN
+SELECT id_camion, patente, estado,peso_maximo
+FROM Camiones C JOIN Estados_Camiones E
+	ON c.estado_camion=e.id_estado_camion
+WHERE (patente LIKE'%'+@patente+'%')
+AND c.estado_camion=@id_estado
+AND peso_maximo<@peso_max
+END
+
+CREATE PROCEDURE SP_CONSULTAR_CAMIONES_MAYOR
+@patente varchar(30),
+@id_estado int,
+@peso_max int
+AS
+BEGIN
+SELECT id_camion, patente, estado,peso_maximo
+FROM Camiones C JOIN Estados_Camiones E
+	ON c.estado_camion=e.id_estado_camion
+WHERE (patente LIKE'%'+@patente+'%')
+AND c.estado_camion=@id_estado
+AND peso_maximo>@peso_max
 END

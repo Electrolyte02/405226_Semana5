@@ -34,6 +34,10 @@
             this.lblEstado = new System.Windows.Forms.Label();
             this.cboEstado = new System.Windows.Forms.ComboBox();
             this.dgvCargas = new System.Windows.Forms.DataGridView();
+            this.columnaID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.columnaPeso = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.columnaTipoCarga = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.columnaAcciones = new System.Windows.Forms.DataGridViewButtonColumn();
             this.lblTipoCarga = new System.Windows.Forms.Label();
             this.cboTipoCarga = new System.Windows.Forms.ComboBox();
             this.lblPesoCarga = new System.Windows.Forms.Label();
@@ -47,10 +51,6 @@
             this.btnCancelar = new System.Windows.Forms.Button();
             this.lblPesoRestante = new System.Windows.Forms.Label();
             this.txtPesoRestante = new System.Windows.Forms.TextBox();
-            this.columnaID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.columnaPeso = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.columnaTipoCarga = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.columnaAcciones = new System.Windows.Forms.DataGridViewButtonColumn();
             this.lblKilosRestantes = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCargas)).BeginInit();
             this.SuspendLayout();
@@ -100,6 +100,7 @@
             // 
             // dgvCargas
             // 
+            this.dgvCargas.AllowUserToAddRows = false;
             this.dgvCargas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCargas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.columnaID,
@@ -110,6 +111,31 @@
             this.dgvCargas.Name = "dgvCargas";
             this.dgvCargas.Size = new System.Drawing.Size(551, 150);
             this.dgvCargas.TabIndex = 5;
+            // 
+            // columnaID
+            // 
+            this.columnaID.HeaderText = "";
+            this.columnaID.Name = "columnaID";
+            this.columnaID.Visible = false;
+            this.columnaID.Width = 132;
+            // 
+            // columnaPeso
+            // 
+            this.columnaPeso.HeaderText = "Peso";
+            this.columnaPeso.Name = "columnaPeso";
+            this.columnaPeso.Width = 157;
+            // 
+            // columnaTipoCarga
+            // 
+            this.columnaTipoCarga.HeaderText = "Tipo de Carga";
+            this.columnaTipoCarga.Name = "columnaTipoCarga";
+            this.columnaTipoCarga.Width = 210;
+            // 
+            // columnaAcciones
+            // 
+            this.columnaAcciones.HeaderText = "Acciones";
+            this.columnaAcciones.Name = "columnaAcciones";
+            this.columnaAcciones.Width = 139;
             // 
             // lblTipoCarga
             // 
@@ -186,6 +212,7 @@
             this.btnAgregar.TabIndex = 14;
             this.btnAgregar.Text = "Agregar";
             this.btnAgregar.UseVisualStyleBackColor = true;
+            this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click);
             // 
             // btnAceptar
             // 
@@ -195,6 +222,7 @@
             this.btnAceptar.TabIndex = 15;
             this.btnAceptar.Text = "Aceptar";
             this.btnAceptar.UseVisualStyleBackColor = true;
+            this.btnAceptar.Click += new System.EventHandler(this.btnAceptar_Click);
             // 
             // btnCancelar
             // 
@@ -204,6 +232,7 @@
             this.btnCancelar.TabIndex = 16;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
+            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             // 
             // lblPesoRestante
             // 
@@ -222,27 +251,6 @@
             this.txtPesoRestante.Size = new System.Drawing.Size(118, 20);
             this.txtPesoRestante.TabIndex = 18;
             // 
-            // columnaID
-            // 
-            this.columnaID.HeaderText = "";
-            this.columnaID.Name = "columnaID";
-            this.columnaID.Visible = false;
-            // 
-            // columnaPeso
-            // 
-            this.columnaPeso.HeaderText = "Peso";
-            this.columnaPeso.Name = "columnaPeso";
-            // 
-            // columnaTipoCarga
-            // 
-            this.columnaTipoCarga.HeaderText = "Tipo de Carga";
-            this.columnaTipoCarga.Name = "columnaTipoCarga";
-            // 
-            // columnaAcciones
-            // 
-            this.columnaAcciones.HeaderText = "Acciones";
-            this.columnaAcciones.Name = "columnaAcciones";
-            // 
             // lblKilosRestantes
             // 
             this.lblKilosRestantes.AutoSize = true;
@@ -257,7 +265,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(609, 467);
+            this.ClientSize = new System.Drawing.Size(608, 467);
             this.Controls.Add(this.lblKilosRestantes);
             this.Controls.Add(this.txtPesoRestante);
             this.Controls.Add(this.lblPesoRestante);
@@ -308,10 +316,10 @@
         private System.Windows.Forms.Button btnCancelar;
         private System.Windows.Forms.Label lblPesoRestante;
         private System.Windows.Forms.TextBox txtPesoRestante;
+        private System.Windows.Forms.Label lblKilosRestantes;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnaID;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnaPeso;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnaTipoCarga;
         private System.Windows.Forms.DataGridViewButtonColumn columnaAcciones;
-        private System.Windows.Forms.Label lblKilosRestantes;
     }
 }

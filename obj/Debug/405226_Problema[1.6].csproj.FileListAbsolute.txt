@@ -2,7 +2,6 @@ C:\Users\esteb\source\repos\405226_Problema[1.6]\bin\Debug\405226_Problema[1.6].
 C:\Users\esteb\source\repos\405226_Problema[1.6]\bin\Debug\405226_Problema[1.6].exe
 C:\Users\esteb\source\repos\405226_Problema[1.6]\bin\Debug\405226_Problema[1.6].pdb
 C:\Users\esteb\source\repos\405226_Problema[1.6]\obj\Debug\405226_Problema[1.6].csproj.AssemblyReference.cache
-C:\Users\esteb\source\repos\405226_Problema[1.6]\obj\Debug\405226_Problema[1.6].csproj.SuggestedBindingRedirects.cache
 C:\Users\esteb\source\repos\405226_Problema[1.6]\obj\Debug\_405226_Problema_1._6_.Presentacion.FormCargasCamiones.resources
 C:\Users\esteb\source\repos\405226_Problema[1.6]\obj\Debug\_405226_Problema_1._6_.FormPrincipal.resources
 C:\Users\esteb\source\repos\405226_Problema[1.6]\obj\Debug\_405226_Problema_1._6_.Properties.Resources.resources
@@ -10,3 +9,4 @@ C:\Users\esteb\source\repos\405226_Problema[1.6]\obj\Debug\405226_Problema[1.6].
 C:\Users\esteb\source\repos\405226_Problema[1.6]\obj\Debug\405226_Problema[1.6].csproj.CoreCompileInputs.cache
 C:\Users\esteb\source\repos\405226_Problema[1.6]\obj\Debug\405226_Problema[1.6].exe
 C:\Users\esteb\source\repos\405226_Problema[1.6]\obj\Debug\405226_Problema[1.6].pdb
+C:\Users\esteb\source\repos\405226_Problema[1.6]\obj\Debug\_405226_Problema_1._6_.Vistas.FormConsultaCamiones.resources
