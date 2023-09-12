@@ -28,5 +28,10 @@ namespace _405226_Problema_1._6_
         {
             new FormConsultaCamiones().ShowDialog();
         }
+
+        private void cargasPorCantidadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new FormReporteCantidadTipoCarga().ShowDialog();
+        }
     }
 }

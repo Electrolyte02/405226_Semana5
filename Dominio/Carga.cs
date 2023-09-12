@@ -8,18 +8,26 @@ namespace _405226_Problema_1._6_.Entidades
 {
     internal class Carga
     {
+        private int idCarga;
         private double peso;
         private int tipoCarga;
 
         public Carga()
         {
+            idCarga = 0;
             peso = 0;
             tipoCarga = 0;
         }
 
-        public Carga(double p,int t)
+        public Carga(int i,double p,int t)
         {
-            peso= p; tipoCarga = t;
+            idCarga = i; peso= p; tipoCarga = t;
+        }
+
+        public int IdCarga
+        {
+            get { return idCarga; }
+            set {idCarga = value; }
         }
 
         public double Peso

@@ -25,7 +25,8 @@ namespace _405226_Problema_1._6_.Vistas
         }
         private void btnRegresar_Click(object sender, EventArgs e)
         {
-            this.Dispose();
+            if (MessageBox.Show("Desea Regresar?","Regresar",MessageBoxButtons.OKCancel,MessageBoxIcon.Information) == DialogResult.OK)
+                this.Dispose();
         }
 
         private void btnConsultar_Click(object sender, EventArgs e)
@@ -39,7 +40,8 @@ namespace _405226_Problema_1._6_.Vistas
                     fila["id_camion"].ToString(),
                     fila["patente"].ToString(),
                     fila["estado"].ToString(),
-                    fila["peso_maximo"].ToString()
+                    fila["peso_maximo"].ToString(),
+                    "Ver Detalle"
                 });
             }
         }
@@ -93,6 +95,15 @@ namespace _405226_Problema_1._6_.Vistas
             txtPesoMaximo.Enabled = chkPesoMaximo.Checked;
             rbtMayor.Enabled = chkPesoMaximo.Checked;
             rbtMenor.Enabled = chkPesoMaximo.Checked;
+        }
+
+        private void dgvConsultaCamion_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if(dgvConsultaCamion.CurrentCell.ColumnIndex == 4)
+            {
+                int nro = Convert.ToInt32(dgvConsultaCamion.CurrentRow.Cells["ColumnaId"].Value.ToString());
+                new FormConsultarCargasCamiones(nro).ShowDialog();
+            }
         }
     }
 }

@@ -17,12 +17,14 @@ namespace _405226_Problema_1._6_.Presentacion
         DBHelper servicioDatos;
         Camion nuevoCamion;
         bool primerCarga;
+        int iterar;
         public FormCargasCamiones()
         {
             InitializeComponent();
             servicioDatos = new DBHelper();
             nuevoCamion = new Camion();
             primerCarga = true;
+            iterar = 1;
         }
 
         private void FormCargasCamiones_Load(object sender, EventArgs e)
@@ -89,7 +91,7 @@ namespace _405226_Problema_1._6_.Presentacion
         {
             foreach (DataGridViewRow row in dgvCargas.Rows)
             {
-                if (row.Cells["columnaID"].Value.ToString() == (cboTipoCarga.Text))
+                if (row.Cells["columnaID"].Value.ToString() == (cboTipoCarga.SelectedValue.ToString()))
                 {
                     MessageBox.Show("Este producto ya fue presupuestado...", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -101,7 +103,8 @@ namespace _405226_Problema_1._6_.Presentacion
             string textoTipo = (string)item.Row.ItemArray[1];
             double peso = Convert.ToDouble(txtPesoCarga.Text);
             //Creamos una carga y la pasamos al camion
-            Carga nCarga = new Carga(peso, tipoCarga);
+            Carga nCarga = new Carga(iterar,peso, tipoCarga);
+            iterar++;
             //Agrego la carga al Camion Y ademas al dgv!
             nuevoCamion.AgregarCarga(nCarga);
             dgvCargas.Rows.Add(new object[] {nCarga.TipoCarga,nCarga.Peso,textoTipo,"Quitar" });
@@ -141,6 +144,16 @@ namespace _405226_Problema_1._6_.Presentacion
             else
             {
                 MessageBox.Show("El camion no pudo ser cargado de manera correcta", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void dgvCargas_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dgvCargas.CurrentCell.ColumnIndex == 3)
+            {
+                nuevoCamion.QuitarCarga(dgvCargas.CurrentRow.Index);
+                dgvCargas.Rows.RemoveAt(dgvCargas.CurrentRow.Index);
+                CalcularPesoRestante();
             }
         }
     }

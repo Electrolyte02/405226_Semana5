@@ -106,6 +106,7 @@
             this.dgvConsultaCamion.Name = "dgvConsultaCamion";
             this.dgvConsultaCamion.Size = new System.Drawing.Size(544, 150);
             this.dgvConsultaCamion.TabIndex = 5;
+            this.dgvConsultaCamion.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvConsultaCamion_CellContentClick);
             // 
             // ColumnaId
             // 

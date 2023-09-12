@@ -111,6 +111,7 @@
             this.dgvCargas.Name = "dgvCargas";
             this.dgvCargas.Size = new System.Drawing.Size(551, 150);
             this.dgvCargas.TabIndex = 5;
+            this.dgvCargas.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCargas_CellContentClick);
             // 
             // columnaID
             // 

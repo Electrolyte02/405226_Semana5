@@ -33,6 +33,8 @@
             this.camionesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cargasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.consultarCamionesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reportesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cargasPorCantidadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -40,7 +42,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.inicioToolStripMenuItem,
-            this.camionesToolStripMenuItem});
+            this.camionesToolStripMenuItem,
+            this.reportesToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(800, 24);
@@ -76,6 +79,21 @@
             this.consultarCamionesToolStripMenuItem.Text = "Consultar Camiones";
             this.consultarCamionesToolStripMenuItem.Click += new System.EventHandler(this.consultarCamionesToolStripMenuItem_Click);
             // 
+            // reportesToolStripMenuItem
+            // 
+            this.reportesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cargasPorCantidadToolStripMenuItem});
+            this.reportesToolStripMenuItem.Name = "reportesToolStripMenuItem";
+            this.reportesToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
+            this.reportesToolStripMenuItem.Text = "Reportes";
+            // 
+            // cargasPorCantidadToolStripMenuItem
+            // 
+            this.cargasPorCantidadToolStripMenuItem.Name = "cargasPorCantidadToolStripMenuItem";
+            this.cargasPorCantidadToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.cargasPorCantidadToolStripMenuItem.Text = "Cargas por Cantidad";
+            this.cargasPorCantidadToolStripMenuItem.Click += new System.EventHandler(this.cargasPorCantidadToolStripMenuItem_Click);
+            // 
             // FormPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -99,6 +117,8 @@
         private System.Windows.Forms.ToolStripMenuItem camionesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cargasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem consultarCamionesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem reportesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cargasPorCantidadToolStripMenuItem;
     }
 }
 
