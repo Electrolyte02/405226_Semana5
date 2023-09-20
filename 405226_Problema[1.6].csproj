@@ -106,11 +106,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DSTipoCargasCamiones.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Vistas\FormEditarCamiones.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vistas\FormEditarCamiones.Designer.cs">
+      <DependentUpon>FormEditarCamiones.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Vistas\FormCargasCamiones.resx">
       <DependentUpon>FormCargasCamiones.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Vistas\FormConsultaCamiones.resx">
       <DependentUpon>FormConsultaCamiones.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vistas\FormEditarCamiones.resx">
+      <DependentUpon>FormEditarCamiones.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Vistas\FormPrincipal.resx">
       <DependentUpon>FormPrincipal.cs</DependentUpon>

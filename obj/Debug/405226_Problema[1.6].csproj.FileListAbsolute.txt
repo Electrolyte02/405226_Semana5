@@ -65,3 +65,4 @@ C:\Users\esteb\source\repos\405226_Problema[1.6]\bin\Debug\zh-CHT\Microsoft.Repo
 C:\Users\esteb\source\repos\405226_Problema[1.6]\obj\Debug\405226_Problema[1.6].csproj.CopyComplete
 C:\Users\esteb\source\repos\405226_Problema[1.6]\obj\Debug\_405226_Problema_1._6_.Vistas.FormReporteCantidadTipoCarga.resources
 C:\Users\esteb\source\repos\405226_Problema[1.6]\obj\Debug\_405226_Problema_1._6_.Vistas.FormConsultarCargasCamiones.resources
+C:\Users\esteb\source\repos\405226_Problema[1.6]\obj\Debug\_405226_Problema_1._6_.Vistas.Reportes.FormEditarCamiones.resources

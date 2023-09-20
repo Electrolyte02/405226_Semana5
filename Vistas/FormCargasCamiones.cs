@@ -91,9 +91,9 @@ namespace _405226_Problema_1._6_.Presentacion
         {
             foreach (DataGridViewRow row in dgvCargas.Rows)
             {
-                if (row.Cells["columnaID"].Value.ToString() == (cboTipoCarga.SelectedValue.ToString()))
+                if (row.Cells["columnaTipoCarga"].Value.ToString()==(cboTipoCarga.Text))
                 {
-                    MessageBox.Show("Este producto ya fue presupuestado...", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Esa carga ya fue colocada...", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
             }
@@ -122,7 +122,6 @@ namespace _405226_Problema_1._6_.Presentacion
         {
             nuevoCamion.EstadoCamion = (int)cboEstado.SelectedValue;
             nuevoCamion.Patente = txtPatente.Text;
-
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)

@@ -101,6 +101,7 @@
             // dgvCargas
             // 
             this.dgvCargas.AllowUserToAddRows = false;
+            this.dgvCargas.AllowUserToDeleteRows = false;
             this.dgvCargas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCargas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.columnaID,
@@ -109,6 +110,7 @@
             this.columnaAcciones});
             this.dgvCargas.Location = new System.Drawing.Point(38, 220);
             this.dgvCargas.Name = "dgvCargas";
+            this.dgvCargas.ReadOnly = true;
             this.dgvCargas.Size = new System.Drawing.Size(551, 150);
             this.dgvCargas.TabIndex = 5;
             this.dgvCargas.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCargas_CellContentClick);
@@ -117,6 +119,7 @@
             // 
             this.columnaID.HeaderText = "";
             this.columnaID.Name = "columnaID";
+            this.columnaID.ReadOnly = true;
             this.columnaID.Visible = false;
             this.columnaID.Width = 132;
             // 
@@ -124,18 +127,21 @@
             // 
             this.columnaPeso.HeaderText = "Peso";
             this.columnaPeso.Name = "columnaPeso";
+            this.columnaPeso.ReadOnly = true;
             this.columnaPeso.Width = 157;
             // 
             // columnaTipoCarga
             // 
             this.columnaTipoCarga.HeaderText = "Tipo de Carga";
             this.columnaTipoCarga.Name = "columnaTipoCarga";
+            this.columnaTipoCarga.ReadOnly = true;
             this.columnaTipoCarga.Width = 210;
             // 
             // columnaAcciones
             // 
             this.columnaAcciones.HeaderText = "Acciones";
             this.columnaAcciones.Name = "columnaAcciones";
+            this.columnaAcciones.ReadOnly = true;
             this.columnaAcciones.Width = 139;
             // 
             // lblTipoCarga

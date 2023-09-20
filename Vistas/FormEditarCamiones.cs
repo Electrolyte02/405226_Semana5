@@ -1,4 +1,6 @@
-﻿using System;
+﻿using _405226_Problema_1._6_.Dominio;
+using _405226_Problema_1._6_.Entidades;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,56 +9,55 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using _405226_Problema_1._6_.Dominio;
-using _405226_Problema_1._6_.Entidades;
-using _405226_Problema_1._6_.Presentacion;
-using _405226_Problema_1._6_.Vistas;
 
-namespace _405226_Problema_1._6_.Vistas
+namespace _405226_Problema_1._6_.Vistas.Reportes
 {
-    public partial class FormConsultarCargasCamiones : Form
+    public partial class FormEditarCamiones : Form
     {
         DBHelper servicioDatos;
-        Camion camionConsultar;
-        public FormConsultarCargasCamiones(int nro)
+        Camion camionEditar;
+        public FormEditarCamiones(int nro)
         {
             InitializeComponent();
             servicioDatos = new DBHelper();
-            camionConsultar = servicioDatos.TraerCamion(nro);
-            servicioDatos.TraerCargas(camionConsultar);
+            camionEditar = servicioDatos.TraerCamion(nro);
+            servicioDatos.TraerCargas(camionEditar);
         }
 
-        private void FormEditarCargasCamiones_Load(object sender,EventArgs e)
+        private void FormEditarCamiones_Load(object sender, EventArgs e)
         {
-            lblNroCamion.Text += camionConsultar.IdCamion.ToString();
-            txtPatente.Text = camionConsultar.Patente;
+            lblNroCamion.Text += camionEditar.IdCamion.ToString();
+            txtPatente.Text = camionEditar.Patente;
             txtPesoMaximo.Enabled = false;
-            txtPesoMaximo.Text = camionConsultar.PesoMaximo.ToString();
+            txtPesoMaximo.Text = camionEditar.PesoMaximo.ToString();
             servicioDatos.cargarCombo(cboEstado, "SP_CONSULTAR_ESTADOS");
             servicioDatos.cargarCombo(cboTipoCarga, "SP_CONSULTAR_TIPOS_CARGA");
-            cboEstado.SelectedIndex = camionConsultar.EstadoCamion-1;
+            cboEstado.SelectedIndex = camionEditar.EstadoCamion - 1;
             txtPesoRestante.Enabled = false;
-            foreach(Carga c in camionConsultar.ListaCargas)
+            foreach (Carga c in camionEditar.ListaCargas)
             {
                 switch (c.TipoCarga)
                 {
                     case 1:
-                        dgvCargas.Rows.Add(new object[] { c.IdCarga, c.Peso, "Packing", "Quitar" });
+                        dgvCargasCamiones.Rows.Add(new object[] { c.IdCarga, c.Peso, "Packing", "Quitar" });
                         break;
                     case 2:
-                        dgvCargas.Rows.Add(new object[] { c.IdCarga, c.Peso, "Cajas", "Quitar" });
+                        dgvCargasCamiones.Rows.Add(new object[] { c.IdCarga, c.Peso, "Cajas", "Quitar" });
                         break;
                     case 3:
-                        dgvCargas.Rows.Add(new object[] { c.IdCarga, c.Peso, "Bidones", "Quitar" });
+                        dgvCargasCamiones.Rows.Add(new object[] { c.IdCarga, c.Peso, "Bidones", "Quitar" });
                         break;
                 }
             }
             CalcularPesoRestante();
-            cboEstado.Enabled = false;
-            cboTipoCarga.Enabled = false;
-            txtPatente.Enabled = false;
-            txtPesoCarga.Enabled = false;
-            btnAgregar.Enabled = false;
+        }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            if(MessageBox.Show("Desea Cancelar la edicion?","Cancelar",MessageBoxButtons.OKCancel,MessageBoxIcon.Information) == DialogResult.OK)
+            {
+                this.Dispose();
+            }
         }
 
         private void btnAgregar_Click(object sender, EventArgs e)
@@ -89,7 +90,7 @@ namespace _405226_Problema_1._6_.Vistas
                 MessageBox.Show("Debe ingresar un maximo valido!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            if ((Convert.ToDouble(txtPesoCarga.Text) + camionConsultar.CalcularTotal()) > Convert.ToDouble(txtPesoMaximo.Text))
+            if ((Convert.ToDouble(txtPesoCarga.Text) + camionEditar.CalcularTotal()) > Convert.ToDouble(txtPesoMaximo.Text))
             {
                 MessageBox.Show("No puede sumarse esa carga ya que supera el maximo del camion!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -99,11 +100,11 @@ namespace _405226_Problema_1._6_.Vistas
 
         private void AgregarCarga()
         {
-            foreach (DataGridViewRow row in dgvCargas.Rows)
+            foreach (DataGridViewRow row in dgvCargasCamiones.Rows)
             {
-                if (row.Cells["columnaID"].Value == (cboTipoCarga.SelectedValue))
+                if (row.Cells["columnaTipoCarga"].Value.ToString() == (cboTipoCarga.Text))
                 {
-                    MessageBox.Show("Este producto ya fue presupuestado...", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Esa carga ya fue colocada...", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
             }
@@ -117,27 +118,45 @@ namespace _405226_Problema_1._6_.Vistas
             nCarga.TipoCarga = tipoCarga;
             nCarga.Peso = peso;
             //Agrego la carga al Camion Y ademas al dgv!
-            camionConsultar.AgregarCarga(nCarga);
-            dgvCargas.Rows.Add(new object[] { nCarga.TipoCarga, nCarga.Peso, textoTipo, "Quitar" });
+            camionEditar.AgregarCarga(nCarga);
+            dgvCargasCamiones.Rows.Add(new object[] { nCarga.TipoCarga, nCarga.Peso, textoTipo, "Quitar" });
             CalcularPesoRestante();
         }
-
 
         private void CalcularPesoRestante()
         {
             txtPesoRestante.Enabled = false;
             txtPesoRestante.Text = string.Empty;
-            txtPesoRestante.Text = camionConsultar.PesoRestante().ToString();
+            txtPesoRestante.Text = camionEditar.PesoRestante().ToString();
         }
 
-        private void dgvCargas_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void dgvCargasCamiones_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (dgvCargasCamiones.CurrentCell.ColumnIndex == 3)
+            {
+                camionEditar.QuitarCarga(dgvCargasCamiones.CurrentRow.Index);
+                dgvCargasCamiones.Rows.RemoveAt(dgvCargasCamiones.CurrentRow.Index);
+                CalcularPesoRestante();
+            }
         }
 
-        private void btnRegresar_Click(object sender, EventArgs e)
+        private void btnConfirmar_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Desea Regresar?","Regresar",MessageBoxButtons.OKCancel,MessageBoxIcon.Information) == DialogResult.OK)
+            if (servicioDatos.ActualizarCamion(camionEditar))
+            {
+                MessageBox.Show("El camion ha sido editado correctamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.Dispose();
+            }
+            else
+            {
+                MessageBox.Show("El camion no pudo ser editado de manera correcta", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public void GrabarCamion()
+        {
+            camionEditar.EstadoCamion = (int)cboEstado.SelectedValue;
+            camionEditar.Patente = txtPatente.Text;
         }
     }
 }

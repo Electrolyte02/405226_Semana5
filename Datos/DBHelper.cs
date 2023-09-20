@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace _405226_Problema_1._6_.Dominio
 {
@@ -24,8 +25,6 @@ namespace _405226_Problema_1._6_.Dominio
         private void Conectar()
         {
             conexion.Open();
-            comando = new SqlCommand();
-            comando.Connection = conexion;
         }
 
         public void Desconectar()
@@ -183,18 +182,22 @@ namespace _405226_Problema_1._6_.Dominio
                 //Abro la conexion y despues abro la transaccion bajo esa conexion!
                 transaccion = conexion.BeginTransaction();
                 //Al crear el comando le pasamos x parametro: el string del comando, la conexion y la transaccion
+                SqlCommand comando2 = new SqlCommand("SP_BORRAR_CARGAS",conexion,transaccion);
                 SqlCommand comando = new SqlCommand("SP_ACTUALIZAR_CAMION", conexion, transaccion);
                 comando.CommandType = CommandType.StoredProcedure;
-                comando.Parameters.AddWithValue("@id_camion",camion.IdCamion);
                 comando.Parameters.AddWithValue("@patente", camion.Patente);
-                comando.Parameters.AddWithValue("@pesoMax", camion.PesoMaximo);
-                comando.Parameters.AddWithValue("@estadoCamion", camion.EstadoCamion);
+                comando.Parameters.AddWithValue("@id_camion",camion.IdCamion);
+                comando.Parameters.AddWithValue("@estado_camion", camion.EstadoCamion);
+                comando.Parameters.AddWithValue("@peso_maximo", camion.PesoMaximo);
                 comando.ExecuteNonQuery();
+                comando2.CommandType = CommandType.StoredProcedure;
+                comando2.Parameters.AddWithValue("@id_camion",camion.IdCamion);
+                comando2.ExecuteNonQuery();
                 foreach (Carga c in camion.ListaCargas)
                 {
-                    SqlCommand comandoCarga = new SqlCommand("SP_ACTUALIZAR_CARGA", conexion, transaccion);
+                    SqlCommand comandoCarga = new SqlCommand("SP_INSERTAR_CARGA", conexion, transaccion);
                     comandoCarga.CommandType = CommandType.StoredProcedure;
-                    comandoCarga.Parameters.AddWithValue("@id_carga", c.IdCarga);
+                    comandoCarga.Parameters.AddWithValue("@idCamion",camion.IdCamion);
                     comandoCarga.Parameters.AddWithValue("@pesoCarga", c.Peso);
                     comandoCarga.Parameters.AddWithValue("@tipoCarga", c.TipoCarga);
                     comandoCarga.ExecuteNonQuery();
@@ -213,9 +216,39 @@ namespace _405226_Problema_1._6_.Dominio
             {
                 if (conexion != null && conexion.State == ConnectionState.Open)
                 {
-                    conexion.Close();
+                    Desconectar();
                 }
             }
+            return aux;
+        }
+
+        public int BorrarCamion(int nroCamion)
+        {
+            int aux = 0;
+            Conectar();
+            comando.CommandType = CommandType.StoredProcedure;
+            comando.CommandText = "SP_BORRAR_CAMION";
+            Parametro param = new Parametro("@id_camion", nroCamion);
+            comando.Parameters.AddWithValue(param.Nombre, param.Valor);
+            aux = comando.ExecuteNonQuery();
+            Desconectar();
+            return aux;
+        }
+
+        public bool PruebaUpdate(Camion camion)
+        {
+            bool aux = true;
+            SqlTransaction transaccion = null;
+            Conectar();
+            transaccion = conexion.BeginTransaction();
+            SqlCommand comando = new SqlCommand("SP_ACTUALIZAR_CAMION", conexion,transaccion);
+            comando.CommandType = CommandType.StoredProcedure;
+            comando.Parameters.AddWithValue("@patente", camion.Patente);
+            comando.Parameters.AddWithValue("@id_camion", camion.IdCamion);
+            comando.Parameters.AddWithValue("@estado_camion", camion.EstadoCamion);
+            comando.Parameters.AddWithValue("@peso_maximo", camion.PesoMaximo);
+            comando.ExecuteNonQuery();
+            Desconectar();
             return aux;
         }
     }

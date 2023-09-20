@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using _405226_Problema_1._6_.Presentacion;
+using _405226_Problema_1._6_.Vistas.Reportes;
 
 namespace _405226_Problema_1._6_.Vistas
 {
@@ -31,19 +33,7 @@ namespace _405226_Problema_1._6_.Vistas
 
         private void btnConsultar_Click(object sender, EventArgs e)
         {
-            DataTable tabla = CargarTabla();
-            dgvConsultaCamion.Rows.Clear();
-            foreach(DataRow fila in tabla.Rows)
-            {
-                dgvConsultaCamion.Rows.Add(new object[]
-                {
-                    fila["id_camion"].ToString(),
-                    fila["patente"].ToString(),
-                    fila["estado"].ToString(),
-                    fila["peso_maximo"].ToString(),
-                    "Ver Detalle"
-                });
-            }
+            CargarDataGridView();
         }
 
         private DataTable CargarTabla()
@@ -104,6 +94,42 @@ namespace _405226_Problema_1._6_.Vistas
                 int nro = Convert.ToInt32(dgvConsultaCamion.CurrentRow.Cells["ColumnaId"].Value.ToString());
                 new FormConsultarCargasCamiones(nro).ShowDialog();
             }
+        }
+
+        private void btnBorrar_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Esta seguro que desea borrar el camion? Esta accion no se puede deshacer.","Borrar?",MessageBoxButtons.OKCancel,MessageBoxIcon.Warning) == DialogResult.OK)
+            {
+                int nro = Convert.ToInt32(dgvConsultaCamion.CurrentRow.Cells["ColumnaId"].Value.ToString());
+                if (gestor.BorrarCamion(nro) >= 1)
+                    MessageBox.Show("Camion Borrado Con exito!", "Borrado exitoso", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                else
+                    MessageBox.Show("No se pudo borrar ese camion!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                CargarDataGridView();
+            }
+        }
+
+        private void CargarDataGridView()
+        {
+            DataTable tabla = CargarTabla();
+            dgvConsultaCamion.Rows.Clear();
+            foreach (DataRow fila in tabla.Rows)
+            {
+                dgvConsultaCamion.Rows.Add(new object[]
+                {
+                    fila["id_camion"].ToString(),
+                    fila["patente"].ToString(),
+                    fila["estado"].ToString(),
+                    fila["peso_maximo"].ToString(),
+                    "Ver Detalle"
+                });
+            }
+        }
+
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            int nro = Convert.ToInt32(dgvConsultaCamion.CurrentRow.Cells["ColumnaId"].Value.ToString());
+            new FormEditarCamiones(nro).ShowDialog();
         }
     }
 }

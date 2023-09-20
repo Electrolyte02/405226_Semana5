@@ -46,6 +46,8 @@
             this.rbtMenor = new System.Windows.Forms.RadioButton();
             this.btnRegresar = new System.Windows.Forms.Button();
             this.chkPesoMaximo = new System.Windows.Forms.CheckBox();
+            this.btnEditar = new System.Windows.Forms.Button();
+            this.btnBorrar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvConsultaCamion)).BeginInit();
             this.SuspendLayout();
             // 
@@ -207,11 +209,33 @@
             this.chkPesoMaximo.UseVisualStyleBackColor = true;
             this.chkPesoMaximo.CheckedChanged += new System.EventHandler(this.chkPesoMaximo_CheckedChanged);
             // 
+            // btnEditar
+            // 
+            this.btnEditar.Location = new System.Drawing.Point(33, 350);
+            this.btnEditar.Name = "btnEditar";
+            this.btnEditar.Size = new System.Drawing.Size(100, 23);
+            this.btnEditar.TabIndex = 13;
+            this.btnEditar.Text = "Editar";
+            this.btnEditar.UseVisualStyleBackColor = true;
+            this.btnEditar.Click += new System.EventHandler(this.btnEditar_Click);
+            // 
+            // btnBorrar
+            // 
+            this.btnBorrar.Location = new System.Drawing.Point(146, 350);
+            this.btnBorrar.Name = "btnBorrar";
+            this.btnBorrar.Size = new System.Drawing.Size(100, 23);
+            this.btnBorrar.TabIndex = 14;
+            this.btnBorrar.Text = "Borrar";
+            this.btnBorrar.UseVisualStyleBackColor = true;
+            this.btnBorrar.Click += new System.EventHandler(this.btnBorrar_Click);
+            // 
             // FormConsultaCamiones
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(607, 382);
+            this.Controls.Add(this.btnBorrar);
+            this.Controls.Add(this.btnEditar);
             this.Controls.Add(this.chkPesoMaximo);
             this.Controls.Add(this.btnRegresar);
             this.Controls.Add(this.rbtMenor);
@@ -253,5 +277,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnaPesoMaximo;
         private System.Windows.Forms.DataGridViewButtonColumn ColumnaAcciones;
         private System.Windows.Forms.CheckBox chkPesoMaximo;
+        private System.Windows.Forms.Button btnEditar;
+        private System.Windows.Forms.Button btnBorrar;
     }
 }
