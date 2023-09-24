@@ -10,18 +10,20 @@ using System.Windows.Forms;
 using _405226_Problema_1._6_.Dominio;
 using _405226_Problema_1._6_.Entidades;
 using _405226_Problema_1._6_.Presentacion;
+using _405226_Problema_1._6_.Servicio.Implementacion;
+using _405226_Problema_1._6_.Servicio.Interfaz;
 using _405226_Problema_1._6_.Vistas;
 
 namespace _405226_Problema_1._6_.Vistas
 {
     public partial class FormConsultarCargasCamiones : Form
     {
-        DBHelper servicioDatos;
+        IServicio servicioDatos;
         Camion camionConsultar;
         public FormConsultarCargasCamiones(int nro)
         {
             InitializeComponent();
-            servicioDatos = new DBHelper();
+            servicioDatos = new Servicio.Implementacion.Servicio();
             camionConsultar = servicioDatos.TraerCamion(nro);
             servicioDatos.TraerCargas(camionConsultar);
         }
@@ -32,13 +34,13 @@ namespace _405226_Problema_1._6_.Vistas
             txtPatente.Text = camionConsultar.Patente;
             txtPesoMaximo.Enabled = false;
             txtPesoMaximo.Text = camionConsultar.PesoMaximo.ToString();
-            servicioDatos.cargarCombo(cboEstado, "SP_CONSULTAR_ESTADOS");
-            servicioDatos.cargarCombo(cboTipoCarga, "SP_CONSULTAR_TIPOS_CARGA");
-            cboEstado.SelectedIndex = camionConsultar.EstadoCamion-1;
+            cboEstado.DataSource = servicioDatos.TraerEstadosCamion();
+            cboTipoCarga.DataSource = servicioDatos.TraerTiposCarga();
+            cboEstado.SelectedIndex = camionConsultar.EstadoCamion.IdEstado-1;
             txtPesoRestante.Enabled = false;
             foreach(Carga c in camionConsultar.ListaCargas)
             {
-                switch (c.TipoCarga)
+                switch (c.TipoCarga.IdTipoCarga)
                 {
                     case 1:
                         dgvCargas.Rows.Add(new object[] { c.IdCarga, c.Peso, "Packing", "Quitar" });
@@ -114,11 +116,12 @@ namespace _405226_Problema_1._6_.Vistas
             double peso = Convert.ToDouble(txtPesoCarga.Text);
             //Creamos una carga y la pasamos al camion
             Carga nCarga = new Carga();
-            nCarga.TipoCarga = tipoCarga;
+            nCarga.TipoCarga.IdTipoCarga = tipoCarga;
+            nCarga.TipoCarga.NombreTipo = textoTipo;
             nCarga.Peso = peso;
             //Agrego la carga al Camion Y ademas al dgv!
             camionConsultar.AgregarCarga(nCarga);
-            dgvCargas.Rows.Add(new object[] { nCarga.TipoCarga, nCarga.Peso, textoTipo, "Quitar" });
+            dgvCargas.Rows.Add(new object[] { nCarga.TipoCarga.IdTipoCarga, nCarga.Peso, nCarga.TipoCarga.NombreTipo, "Quitar" });
             CalcularPesoRestante();
         }
 

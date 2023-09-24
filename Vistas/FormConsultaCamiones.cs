@@ -10,17 +10,20 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using _405226_Problema_1._6_.Presentacion;
 using _405226_Problema_1._6_.Vistas.Reportes;
+using _405226_Problema_1._6_.Servicio.Interfaz;
+using _405226_Problema_1._6_.Entidades;
 
 namespace _405226_Problema_1._6_.Vistas
 {
     public partial class FormConsultaCamiones : Form
     {
-        DBHelper gestor;
+        IServicio servicioDatos;
         public FormConsultaCamiones()
         {
             InitializeComponent();
-            gestor = new DBHelper();
-            gestor.cargarCombo(cboEstado, "SP_CONSULTAR_ESTADOS");
+            servicioDatos = new Servicio.Implementacion.Servicio();
+            cboEstado.DataSource = servicioDatos.TraerEstadosCamion();
+            cboEstado.DropDownStyle = ComboBoxStyle.DropDownList;
             txtPesoMaximo.Enabled = false;
             rbtMayor.Enabled = false;
             rbtMenor.Enabled = false;
@@ -36,16 +39,16 @@ namespace _405226_Problema_1._6_.Vistas
             CargarDataGridView();
         }
 
-        private DataTable CargarTabla()
+        private List<Camion> CargarTabla()
         {
-            DataTable tabla = new DataTable();
+            List<Camion> lCamiones = new List<Camion>();
             List<Parametro> listParametro = new List<Parametro>();
             if (chkPesoMaximo.Checked)
             {
                 if (String.IsNullOrEmpty(txtPesoMaximo.Text))
                 {
                     MessageBox.Show("Debe ingresar un peso maximo para Comparar");
-                    return tabla;
+                    return lCamiones;
                 }
                 try
                 {
@@ -54,30 +57,33 @@ namespace _405226_Problema_1._6_.Vistas
                 catch
                 {
                     MessageBox.Show("Ingrese un peso maximo valido para Comparar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return tabla;
+                    return lCamiones;
                 }
                 if (rbtMayor.Checked)
                 {
+                    EstadoCamion auxEstado = (EstadoCamion)cboEstado.SelectedItem;
                     listParametro.Add(new Parametro("@patente", txtPatente.Text));
-                    listParametro.Add(new Parametro("@id_estado", cboEstado.SelectedValue));
+                    listParametro.Add(new Parametro("@id_estado", auxEstado.IdEstado));
                     listParametro.Add(new Parametro("@peso_max", Convert.ToInt32(txtPesoMaximo.Text)));
-                    tabla = gestor.ConsultarCamiones("SP_CONSULTAR_CAMIONES_MAYOR", listParametro);
+                    lCamiones = servicioDatos.TraerCamiones(listParametro,"SP_CONSULTAR_CAMIONES_MAYOR");
                 }
                 else if (rbtMenor.Checked)
                 {
+                    EstadoCamion auxEstado = (EstadoCamion)cboEstado.SelectedItem;
                     listParametro.Add(new Parametro("@patente", txtPatente.Text));
-                    listParametro.Add(new Parametro("@id_estado", cboEstado.SelectedValue));
+                    listParametro.Add(new Parametro("@id_estado", auxEstado.IdEstado));
                     listParametro.Add(new Parametro("@peso_max", Convert.ToInt32(txtPesoMaximo.Text)));
-                    tabla = gestor.ConsultarCamiones("SP_CONSULTAR_CAMIONES_MENOR", listParametro);
+                    lCamiones = servicioDatos.TraerCamiones(listParametro,"SP_CONSULTAR_CAMIONES_MENOR");
                 }
             }
             else if (chkPesoMaximo.Checked == false)
             {
+                EstadoCamion auxEstado = (EstadoCamion)cboEstado.SelectedItem;
                 listParametro.Add(new Parametro("@patente", txtPatente.Text));
-                listParametro.Add(new Parametro("@id_estado", cboEstado.SelectedValue));
-                tabla = gestor.ConsultarCamiones("SP_CONSULTAR_CAMIONES", listParametro);
+                listParametro.Add(new Parametro("@id_estado", auxEstado.IdEstado));
+                lCamiones = servicioDatos.TraerCamiones(listParametro, "SP_CONSULTAR_CAMIONES");
             }
-            return tabla;
+            return lCamiones;
         }
 
         private void chkPesoMaximo_CheckedChanged(object sender, EventArgs e)
@@ -89,6 +95,11 @@ namespace _405226_Problema_1._6_.Vistas
 
         private void dgvConsultaCamion_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (dgvConsultaCamion.CurrentRow==null)
+            {
+                MessageBox.Show("Debe Consultar los camiones previamente!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             if(dgvConsultaCamion.CurrentCell.ColumnIndex == 4)
             {
                 int nro = Convert.ToInt32(dgvConsultaCamion.CurrentRow.Cells["ColumnaId"].Value.ToString());
@@ -98,10 +109,15 @@ namespace _405226_Problema_1._6_.Vistas
 
         private void btnBorrar_Click(object sender, EventArgs e)
         {
+            if (dgvConsultaCamion.CurrentRow == null)
+            {
+                MessageBox.Show("Debe Consultar los camiones previamente!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             if (MessageBox.Show("Esta seguro que desea borrar el camion? Esta accion no se puede deshacer.","Borrar?",MessageBoxButtons.OKCancel,MessageBoxIcon.Warning) == DialogResult.OK)
             {
                 int nro = Convert.ToInt32(dgvConsultaCamion.CurrentRow.Cells["ColumnaId"].Value.ToString());
-                if (gestor.BorrarCamion(nro) >= 1)
+                if (servicioDatos.BorrarCamion(nro))
                     MessageBox.Show("Camion Borrado Con exito!", "Borrado exitoso", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 else
                     MessageBox.Show("No se pudo borrar ese camion!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -111,16 +127,16 @@ namespace _405226_Problema_1._6_.Vistas
 
         private void CargarDataGridView()
         {
-            DataTable tabla = CargarTabla();
+            List<Camion> lCamiones = CargarTabla();
             dgvConsultaCamion.Rows.Clear();
-            foreach (DataRow fila in tabla.Rows)
+            foreach (Camion c in lCamiones)
             {
                 dgvConsultaCamion.Rows.Add(new object[]
                 {
-                    fila["id_camion"].ToString(),
-                    fila["patente"].ToString(),
-                    fila["estado"].ToString(),
-                    fila["peso_maximo"].ToString(),
+                    c.IdCamion.ToString(),
+                    c.Patente.ToString(),
+                    c.EstadoCamion.IdEstado.ToString(),
+                    c.PesoMaximo.ToString(),
                     "Ver Detalle"
                 });
             }
@@ -128,6 +144,11 @@ namespace _405226_Problema_1._6_.Vistas
 
         private void btnEditar_Click(object sender, EventArgs e)
         {
+            if (dgvConsultaCamion.CurrentRow == null)
+            {
+                MessageBox.Show("Debe Consultar los camiones previamente!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             int nro = Convert.ToInt32(dgvConsultaCamion.CurrentRow.Cells["ColumnaId"].Value.ToString());
             new FormEditarCamiones(nro).ShowDialog();
         }

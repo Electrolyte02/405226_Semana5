@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _405226_Problema_1._6_.Dominio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace _405226_Problema_1._6_.Entidades
     {
         private int idCamion;
         private string patente;
-        private int estadoCamion;
+        private EstadoCamion estadoCamion;
         private int pesoMaximo;
         private List<Carga> listaCargas;
 
@@ -18,12 +19,12 @@ namespace _405226_Problema_1._6_.Entidades
         {
             idCamion = 0;
             patente = string.Empty;
-            estadoCamion = 0;
+            estadoCamion = null;
             pesoMaximo = 0;
             listaCargas = new List<Carga>();
         }
 
-        public Camion(int id, string p, int e, int pesoM)
+        public Camion(int id, string p, EstadoCamion e, int pesoM)
         {
             idCamion = id;
             patente = p;
@@ -44,7 +45,7 @@ namespace _405226_Problema_1._6_.Entidades
             set { patente = value; }
         }
 
-        public int EstadoCamion
+        public EstadoCamion EstadoCamion
         {
             get { return estadoCamion; }
             set { estadoCamion = value; }

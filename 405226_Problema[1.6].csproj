@@ -64,10 +64,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Datos\Implementacion\CamionesDAO.cs" />
+    <Compile Include="Datos\Interfaz\ICamionesDAO.cs" />
     <Compile Include="Dominio\Camion.cs" />
     <Compile Include="Dominio\Carga.cs" />
-    <Compile Include="Datos\DBHelper.cs" />
+    <Compile Include="Datos\HelperDAO.cs" />
     <Compile Include="Datos\Parametro.cs" />
+    <Compile Include="Dominio\EstadoCamion.cs" />
+    <Compile Include="Dominio\TipoCarga.cs" />
+    <Compile Include="Servicio\Implementacion\Servicio.cs" />
+    <Compile Include="Servicio\Interfaz\IServicio.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="Vistas\FormCargasCamiones.cs">
       <SubType>Form</SubType>

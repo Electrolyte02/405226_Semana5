@@ -10,7 +10,8 @@ CREATE TABLE Camiones(
 id_camion int IDENTITY(1,1),
 patente varchar(20),
 estado_camion int,
-peso_maximo int
+peso_maximo int,
+fecha_baja datetime
 CONSTRAINT pk_camiones PRIMARY KEY(id_camion),
 CONSTRAINT fk_estado_camion FOREIGN KEY(estado_camion)
 REFERENCES Estados_Camiones(id_estado_camion));
@@ -88,6 +89,7 @@ FROM Camiones C JOIN Estados_Camiones E
 	ON c.estado_camion=e.id_estado_camion
 WHERE (patente LIKE '%'+@patente+'%')
 AND c.estado_camion=@id_estado
+AND c.fecha_baja IS NULL
 END
 
 CREATE PROCEDURE SP_CONSULTAR_CAMIONES_MENOR
@@ -102,6 +104,7 @@ FROM Camiones C JOIN Estados_Camiones E
 WHERE (patente LIKE'%'+@patente+'%')
 AND c.estado_camion=@id_estado
 AND peso_maximo<@peso_max
+AND c.fecha_baja IS NULL
 END
 
 CREATE PROCEDURE SP_CONSULTAR_CAMIONES_MAYOR
@@ -116,4 +119,65 @@ FROM Camiones C JOIN Estados_Camiones E
 WHERE (patente LIKE'%'+@patente+'%')
 AND c.estado_camion=@id_estado
 AND peso_maximo>@peso_max
+AND c.fecha_baja IS NULL
+END
+
+CREATE PROCEDURE SP_CONSULTAR_CAMION
+@id_camion int
+AS
+BEGIN
+SELECT id_camion, patente, estado_camion, estado,peso_maximo
+FROM Camiones C JOIN Estados_Camiones E
+	ON c.estado_camion=e.id_estado_camion
+WHERE id_camion=@id_camion
+END
+
+CREATE PROCEDURE SP_CONSULTAR_CARGAS_CAMION
+@id_camion int
+AS 
+BEGIN
+SELECT id_carga, peso, tipo_carga, nombre
+	FROM Cargas c JOIN Tipos_Carga t
+		ON c.tipo_carga=t.id_tipo_carga
+WHERE id_camion=@id_camion
+END
+
+CREATE PROCEDURE SP_CONSULTAR_CANT_CARGAS
+AS
+BEGIN
+SELECT count(id_carga),t.nombre
+FROM Cargas c JOIN Tipos_carga t
+	ON c.tipo_carga=t.id_tipo_carga
+GROUP BY c.tipo_carga,t.nombre
+END
+
+CREATE PROCEDURE SP_ACTUALIZAR_CAMION
+@patente varchar(20),
+@id_camion int, 
+@estado_camion int,
+@peso_maximo int
+AS
+BEGIN
+UPDATE Camiones
+SET patente=@patente,
+estado_camion=@estado_camion,
+peso_maximo=@peso_maximo
+WHERE id_camion=@id_camion
+END
+
+CREATE PROCEDURE SP_BORRAR_CARGAS
+@id_camion int = null
+AS
+BEGIN
+DELETE Cargas
+WHERE id_camion=@id_camion
+END
+
+CREATE PROCEDURE SP_BORRAR_CAMION
+@id_camion int = null
+AS
+BEGIN
+UPDATE Camiones
+SET fecha_baja = getdate()
+WHERE id_camion=@id_camion
 END

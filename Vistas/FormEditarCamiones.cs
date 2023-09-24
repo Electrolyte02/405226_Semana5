@@ -1,5 +1,6 @@
 ﻿using _405226_Problema_1._6_.Dominio;
 using _405226_Problema_1._6_.Entidades;
+using _405226_Problema_1._6_.Servicio.Interfaz;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,12 +15,12 @@ namespace _405226_Problema_1._6_.Vistas.Reportes
 {
     public partial class FormEditarCamiones : Form
     {
-        DBHelper servicioDatos;
+        IServicio servicioDatos;
         Camion camionEditar;
         public FormEditarCamiones(int nro)
         {
             InitializeComponent();
-            servicioDatos = new DBHelper();
+            servicioDatos = new Servicio.Implementacion.Servicio();
             camionEditar = servicioDatos.TraerCamion(nro);
             servicioDatos.TraerCargas(camionEditar);
         }
@@ -30,24 +31,15 @@ namespace _405226_Problema_1._6_.Vistas.Reportes
             txtPatente.Text = camionEditar.Patente;
             txtPesoMaximo.Enabled = false;
             txtPesoMaximo.Text = camionEditar.PesoMaximo.ToString();
-            servicioDatos.cargarCombo(cboEstado, "SP_CONSULTAR_ESTADOS");
-            servicioDatos.cargarCombo(cboTipoCarga, "SP_CONSULTAR_TIPOS_CARGA");
-            cboEstado.SelectedIndex = camionEditar.EstadoCamion - 1;
+            cboEstado.DataSource = servicioDatos.TraerEstadosCamion();
+            cboEstado.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboTipoCarga.DataSource = servicioDatos.TraerTiposCarga();
+            cboTipoCarga.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboEstado.SelectedIndex = camionEditar.EstadoCamion.IdEstado - 1;
             txtPesoRestante.Enabled = false;
             foreach (Carga c in camionEditar.ListaCargas)
             {
-                switch (c.TipoCarga)
-                {
-                    case 1:
-                        dgvCargasCamiones.Rows.Add(new object[] { c.IdCarga, c.Peso, "Packing", "Quitar" });
-                        break;
-                    case 2:
-                        dgvCargasCamiones.Rows.Add(new object[] { c.IdCarga, c.Peso, "Cajas", "Quitar" });
-                        break;
-                    case 3:
-                        dgvCargasCamiones.Rows.Add(new object[] { c.IdCarga, c.Peso, "Bidones", "Quitar" });
-                        break;
-                }
+                dgvCargasCamiones.Rows.Add(new object[] { c.IdCarga, c.Peso, c.TipoCarga.NombreTipo, "Quitar" });
             }
             CalcularPesoRestante();
         }
@@ -115,11 +107,12 @@ namespace _405226_Problema_1._6_.Vistas.Reportes
             double peso = Convert.ToDouble(txtPesoCarga.Text);
             //Creamos una carga y la pasamos al camion
             Carga nCarga = new Carga();
-            nCarga.TipoCarga = tipoCarga;
+            nCarga.TipoCarga.IdTipoCarga = tipoCarga;
+            nCarga.TipoCarga.NombreTipo = textoTipo;
             nCarga.Peso = peso;
             //Agrego la carga al Camion Y ademas al dgv!
             camionEditar.AgregarCarga(nCarga);
-            dgvCargasCamiones.Rows.Add(new object[] { nCarga.TipoCarga, nCarga.Peso, textoTipo, "Quitar" });
+            dgvCargasCamiones.Rows.Add(new object[] { nCarga.TipoCarga.IdTipoCarga, nCarga.Peso, nCarga.TipoCarga.NombreTipo, "Quitar" });
             CalcularPesoRestante();
         }
 
@@ -155,7 +148,7 @@ namespace _405226_Problema_1._6_.Vistas.Reportes
 
         public void GrabarCamion()
         {
-            camionEditar.EstadoCamion = (int)cboEstado.SelectedValue;
+            camionEditar.EstadoCamion = (EstadoCamion)cboEstado.SelectedValue;
             camionEditar.Patente = txtPatente.Text;
         }
     }

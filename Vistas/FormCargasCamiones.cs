@@ -1,27 +1,23 @@
 ﻿using _405226_Problema_1._6_.Dominio;
 using _405226_Problema_1._6_.Entidades;
+using _405226_Problema_1._6_.Servicio.Implementacion;
+using _405226_Problema_1._6_.Servicio.Interfaz;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace _405226_Problema_1._6_.Presentacion
 {
     public partial class FormCargasCamiones : Form
     {
-        DBHelper servicioDatos;
+        IServicio servicioDatos;
         Camion nuevoCamion;
         bool primerCarga;
         int iterar;
         public FormCargasCamiones()
         {
             InitializeComponent();
-            servicioDatos = new DBHelper();
+            servicioDatos = new Servicio.Implementacion.Servicio();
             nuevoCamion = new Camion();
             primerCarga = true;
             iterar = 1;
@@ -29,9 +25,11 @@ namespace _405226_Problema_1._6_.Presentacion
 
         private void FormCargasCamiones_Load(object sender, EventArgs e)
         {
-            servicioDatos.NumeracionCamiones(lblCamionesNro);
-            servicioDatos.cargarCombo(cboEstado, "SP_CONSULTAR_ESTADOS");
-            servicioDatos.cargarCombo(cboTipoCarga, "SP_CONSULTAR_TIPOS_CARGA");
+            lblCamionesNro.Text += servicioDatos.ObtenerNroProxCamion().ToString();
+            cboEstado.DataSource = servicioDatos.TraerEstadosCamion();
+            cboEstado.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboTipoCarga.DataSource = servicioDatos.TraerTiposCarga();
+            cboTipoCarga.DropDownStyle = ComboBoxStyle.DropDownList;
             txtPesoRestante.Enabled = false;
         }
 
@@ -98,16 +96,14 @@ namespace _405226_Problema_1._6_.Presentacion
                 }
             }
             //Creo un objeto de datarowview para dsp pasar al data grid view y casteo el tipo de carga como un item!
-            DataRowView item = (DataRowView)cboTipoCarga.SelectedItem;
-            int tipoCarga = (int)item.Row.ItemArray[0];
-            string textoTipo = (string)item.Row.ItemArray[1];
+            TipoCarga item = (TipoCarga)cboTipoCarga.SelectedItem;
             double peso = Convert.ToDouble(txtPesoCarga.Text);
             //Creamos una carga y la pasamos al camion
-            Carga nCarga = new Carga(iterar,peso, tipoCarga);
+            Carga nCarga = new Carga(iterar,peso, item);
             iterar++;
             //Agrego la carga al Camion Y ademas al dgv!
             nuevoCamion.AgregarCarga(nCarga);
-            dgvCargas.Rows.Add(new object[] {nCarga.TipoCarga,nCarga.Peso,textoTipo,"Quitar" });
+            dgvCargas.Rows.Add(new object[] {nCarga.TipoCarga,nCarga.Peso,nCarga.TipoCarga.ToString(),"Quitar" });
             CalcularPesoRestante();
         }
 
@@ -120,7 +116,7 @@ namespace _405226_Problema_1._6_.Presentacion
 
         private void GrabarCamion()
         {
-            nuevoCamion.EstadoCamion = (int)cboEstado.SelectedValue;
+            nuevoCamion.EstadoCamion = (EstadoCamion)cboEstado.SelectedValue;
             nuevoCamion.Patente = txtPatente.Text;
         }
 

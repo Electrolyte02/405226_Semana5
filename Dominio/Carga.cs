@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _405226_Problema_1._6_.Dominio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,16 +11,16 @@ namespace _405226_Problema_1._6_.Entidades
     {
         private int idCarga;
         private double peso;
-        private int tipoCarga;
+        private TipoCarga tipoCarga;
 
         public Carga()
         {
             idCarga = 0;
             peso = 0;
-            tipoCarga = 0;
+            tipoCarga = null;
         }
 
-        public Carga(int i,double p,int t)
+        public Carga(int i,double p,TipoCarga t)
         {
             idCarga = i; peso= p; tipoCarga = t;
         }
@@ -36,7 +37,7 @@ namespace _405226_Problema_1._6_.Entidades
             set { peso = value; }
         }
 
-        public int TipoCarga
+        public TipoCarga TipoCarga
         {
             get { return tipoCarga; }
             set { tipoCarga = value; }
